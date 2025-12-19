@@ -1,3 +1,18 @@
+/*
+File: caesar_cipher.cpp
+Author: Ahmed Mohsen
+Date: 2025-12-19
+Purpose: Beginner C++ program to encrypt and decrypt text using Caesar Cipher.
+Features:
+    - Encrypts and decrypts text with a user-defined key
+    - Handles uppercase and lowercase letters
+    - Validates numeric input for keys
+    - Preserves non-alphabetic characters
+Learning outcomes:
+    - String and character manipulation
+    - Modular arithmetic
+    - Input validation and error handling
+*/
 #include<iostream>
 #include <string>
 #include <iomanip>
@@ -138,4 +153,5 @@ int choosing() {
 
 int main() {
     return choosing();
+
 }
