@@ -1,36 +1,29 @@
-/*
-File: caesar_cipher.cpp
-Author: Ahmed Mohsen
-Date: 2025-12-19
-Purpose: Beginner C++ program to encrypt and decrypt text using Caesar Cipher.
-Features:
-    - Encrypts and decrypts text with a user-defined key
-    - Handles uppercase and lowercase letters
-    - Validates numeric input for keys
-    - Preserves non-alphabetic characters
-Learning outcomes:
-    - String and character manipulation
-    - Modular arithmetic
-    - Input validation and error handling
-*/
 #include<iostream>
 #include <string>
-#include <iomanip>
-#include <vector>
-#include <algorithm>
-#include <numeric>
-#include <cmath>
-#include <sstream>
+//#include <iomanip>
+//#include <vector>
+//#include <algorithm>
+//#include <numeric>
+#include <limits>
+//#include <cmath>
+//#include <sstream>
 #include <cctype>
 
-using namespace std;
-
-#define ld long double
-#define ll long long
+using namespace std;//i know it is a beginner method!!just leave it as it is!!
 
 
+void caesar(std::string& s, int k) {    for (int i=0;i<s.length();i++) {
+        if (s[i]>='a' && s[i]<='z') {
+            s[i]= (s[i]-'a'+((k%26)+26))%26+'a';
+        }
+        else if (s[i]>='A' && s[i]<='Z') {
+            s[i]= (s[i]-'A'+((k%26)+26))%26+'A';
+        }
+    }
+}
 
-int getkey(int &k) {
+
+int getkey(int &k, const int &opp) {
     while (true) {
         if (!(cin >> k)) {
             cin.clear();
@@ -38,47 +31,49 @@ int getkey(int &k) {
             cout << "Invalid input! Enter a number:     \n";
             continue;
         }
+        if (cin.peek() != '\n') {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // FIX: reject mixed input like "1abcd"
+            cout << "Invalid input! Enter a number:\n";
+            continue;
+        }
+
         if (k % 26 == 0) {
             cout << "Try another key, no multiples of 26 allowed: \n";
             continue;
         }
+        if (opp==0)k=-k;//for decrypting
         return k;
     }
 }
 
-int tolower2(char c) {
-    if (c>='A' && c<='Z') {
+int convert(char c) {//for converting small to capital and capital to small
+    unsigned char uc = static_cast<unsigned char>(c);//for removing anything other
+    if (uc>='A' && uc<='Z') {
         return tolower(c);
     }
-    else if (c>='a' && c<='z') {
-        return toupper(c);
+    else if (uc>='a' && uc<='z') {
+        return toupper(uc);
     }
     else {
-        return c;
+        return uc;
     }
 }
 
 
 
 int send_signal() {
+    int opp=1;
     cout << "Enter the text you want to encrypt: " << endl;
     string s1;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin,s1);
+    getline(cin >> ws, s1);
+
     for (int i=0;i<s1.length();i++) {
-         s1[i]= tolower2(s1[i]);
+         s1[i]= convert(s1[i]);
     }
     cout << "Enter your key to encrypt: " << endl;
     int k;
-    k=getkey(k);
-    for (int i=0;i<s1.length();i++) {
-        if (s1[i]>='a' && s1[i]<='z') {
-            s1[i]= (s1[i]-'a'+((k%26)+26))%26+'a';
-        }
-        else if (s1[i]>='A' && s1[i]<='Z') {
-            s1[i]= (s1[i]-'A'+((k%26)+26))%26+'A';
-        }
-    }
+    k=getkey(k,opp);
+    caesar(s1,k);
     cout << s1 << endl;
     return 0;
 }
@@ -86,26 +81,18 @@ int send_signal() {
 
 
 
-int recieve_signal() {
+int receive_signal() {
+    int opp=0;
     cout << "Enter the text you want to decrypt: " << endl;
     string s2;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-    getline(cin,s2);
+    getline(cin >> ws, s2);
     for (int i=0;i<s2.length();i++) {
-         s2[i]= tolower2(s2[i]);
+         s2[i]= convert(s2[i]);
     }
     cout << "Enter your key to decrypt: " << endl;
     int k=0;
-    k=getkey(k);
-    k=-k;
-    for (int i=0;i<s2.length();i++) {
-        if (s2[i]>='a' && s2[i]<='z') {
-            s2[i]= (s2[i]-'a'+((k%26)+26))%26+'a';
-        }
-        else if (s2[i]>='A' && s2[i]<='Z') {
-            s2[i]= (s2[i]-'A'+((k%26)+26))%26+'A';
-        }
-    }
+    k=getkey(k,opp);
+    caesar(s2,k);
     cout << s2 << endl;
     return 0;
 }
@@ -114,18 +101,23 @@ int recieve_signal() {
 
 
 int choosing() {
-    int summm=1;
     string oper;
     while (true) {
-        cout<<"For encrypting enter 1, and for decrypting press 0: " << "\n Note : The first char is only considered!!\n" << endl;
+        cout<<"For encrypting enter 1, and for decrypting press 0: " << "\n Note : Only one char is allowed!!\n" << endl;
         cin>>oper;
         if (oper=="1") {
             send_signal();
         }
         else if (oper=="0"){
-            recieve_signal();
+            receive_signal();
         }
         else {
+            if (cin.peek() != '\n') {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // FIX: reject mixed input like "1abcd"
+                cout << "Invalid input! \n For encrypting enter 1, and for decrypting press 0: " << "\n Note : Only one char is allowed!!\n";
+                continue;
+            }
+
             continue;
         }
         cout << endl;
@@ -134,7 +126,6 @@ int choosing() {
         while (true) {
             cin >> x;
             if (x=="y" || x=="Y") {
-                summm=0;
                 break;
             }
             else if (x=="n" || x=="N") {
@@ -143,6 +134,12 @@ int choosing() {
             else {
                 cout<<"only one char (y/n) is allowed!!!!!\n";
             }
+            if (cin.peek() != '\n') {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // FIX: reject mixed input like "1abcd"
+                cout << "only one char (y/n) is allowed!!!!!\n";
+                continue;
+            }
+
         }
     }
     return 0;
@@ -153,5 +150,4 @@ int choosing() {
 
 int main() {
     return choosing();
-
 }
