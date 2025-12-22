@@ -1,28 +1,27 @@
-# Caesar Cipher in C++
+# Caesar Cipher
 
-This is a beginner-level C++ project that implements a simple **Caesar Cipher** for encrypting and decrypting text.
+## Overview
+This repository contains an implementation of the classical Caesar cipher
+for educational purposes. The project focuses on understanding basic
+encryption and decryption mechanisms using modular arithmetic.
+
+## Objectives
+- Understand classical substitution ciphers
+- Apply modular arithmetic in cryptography
+- Practice clean and structured implementation
 
 ## Features
-- Encrypts and decrypts text using a user-defined key
-- Validates numeric input and prevents invalid keys
-- Handles both uppercase and lowercase letters
-- Preserves non-alphabetic characters
-- Menu-driven interface for repeated usage
+- Encryption with configurable shift
+- Decryption of ciphertext
+- Simple and readable implementation
 
-## Concepts Practiced
-- String manipulation
-- Character handling
-- Modular arithmetic
-- Functions and control flow
-- Input validation and error handling
+## Technologies
+- C++
 
-## How It Works
-The Caesar Cipher shifts alphabetic characters by a given key using modulo 26 arithmetic.  
-Decryption is done by reversing the key value.
-
-## Motivation
-This project was created as part of my learning journey in C++ to better understand encryption logic and text processing.
-
+## Disclaimer
+This project is intended for learning and academic exploration only.
+The Caesar cipher is not secure and should not be used in real-world
+applications.
 ## Future Improvements
 - Better modular design
 - File input/output support
